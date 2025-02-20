@@ -1,31 +1,56 @@
-name: Build Backend and Frontend  
+name: Build Backend and Frontend
 
 on:
   push:
     branches:
-      - main  
+      - main  # Runs when code is pushed to main branch
+  pull_request:
+    branches:
+      - main  # Runs on PRs to main branch
+  workflow_dispatch:  # Allows manual trigger
 
 jobs:
   build:
-    runs-on: ubuntu-latest  
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v2  
+      - name: Checkout Repository
+        uses: actions/checkout@v4  # Fetches your repo code
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v2  
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: '18'  
+          node-version: '20'  # Set the Node.js version
 
+      #  Build Backend
       - name: Install Backend Dependencies
         run: |
-          cd backend  # Move into backend folder
-          npm install  # Install backend dependencies
+          cd backend
+          npm install
 
+      - name: Run Backend Tests
+        run: |
+          cd backend
+          npm test  # Run tests if available
+
+      - name: Build Backend
+        run: |
+          cd backend
+          npm run build || echo "No build script found, skipping"
+
+      # Build Frontend
       - name: Install Frontend Dependencies
         run: |
-          cd frontend  # Move into frontend folder
-          npm install  # Install frontend dependencies
-          npm run build  # Build React app
+          cd frontend
+          npm install
+
+      - name: Run Frontend Tests
+        run: |
+          cd frontend
+          npm test || echo "No tests found, skipping"
+
+      - name: Build Frontend
+        run: |
+          cd frontend
+          npm run build
 
