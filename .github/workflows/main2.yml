@@ -1,0 +1,35 @@
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Backend Setup
+      - name: Install Backend Dependencies
+        run: |
+          cd backend
+          npm install
+
+      - name: Start Backend
+        run: |
+          cd backend
+          nohup node server.js &  # Run backend in the background
+          sleep 5  # Wait for backend to start
+          curl -f http://localhost:3000/health  # Check if backend is running
+
+      # Frontend Setup
+      - name: Install Frontend Dependencies
+        run: |
+          cd frontend
+          npm install
+
+      - name: Build Frontend
+        run: |
+          cd frontend
+          npm run build
+
+      - name: Run Frontend Tests
+        run: |
+          cd frontend
+          npm test  # Replace with actual test command (Jest, Cypress, etc.)
