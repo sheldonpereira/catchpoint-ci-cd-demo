@@ -1,0 +1,31 @@
+name: Build Backend and Frontend  
+
+on:
+  push:
+    branches:
+      - main  
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2  
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2  
+        with:
+          node-version: '18'  
+
+      - name: Install Backend Dependencies
+        run: |
+          cd backend  # Move into backend folder
+          npm install  # Install backend dependencies
+
+      - name: Install Frontend Dependencies
+        run: |
+          cd frontend  # Move into frontend folder
+          npm install  # Install frontend dependencies
+          npm run build  # Build React app
+
