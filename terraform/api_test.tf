@@ -30,6 +30,9 @@ open("http://172.235.6.159:3000/search?q=laptop")
 // Step 3: Open cart
 open("http://172.235.6.159:3000/cart")
 
+// Step 2: Search for 'Laptop'
+open("http://172.235.6.159:3000/search?q=smartwatch")
+
 EOT
 }
 
